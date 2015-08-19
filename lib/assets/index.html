@@ -23,7 +23,7 @@
 		client.on("status",function(datas){
 			var html = "";
 			datas.forEach(function(item,index){
-				html += "<div class='item'>"+item.name+"<small>"+new Date(item.startTime)+"</small><hr></hr><div><a class='btn' href='javascript:stop(\""+item.name+"\")'>停止</a></div></div>"
+				html += html = "<div id="+"_item"+item.name+" class='item'>"+item.name+"<small>"+new Date(item.startTime)+"</small><hr></hr><div><a class='btn' href='javascript:stop(\""+item.name+"\")'>停止</a></div></div>";
 			});
 			body.innerHTML = html;
 		});
