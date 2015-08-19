@@ -1,0 +1,46 @@
+<html>
+	<head>
+		<title>Osr-Cluster.UI</title>
+		<script src="/socket.io/socket.io.js"></script>
+		<style>
+			html,body{background-color:#f4f4f4;margin:0px 0px; padding:0px;font-family:"微软雅黑"}
+			.item{ margin:4px; background-color:#ccc;padding:8px;}
+			.item small{ color:#999; font-size:0.2em;padding-left:20px;float:right;margin-top:10px;}
+			.item hr{border:1px solid #999;}
+			.btn{ background:rgba(255,255,255,0.2);padding:4px; text-decoration:none;}
+			.btn:hover{background-color:rgba(0,0,0,0.5);color:#fff;}
+		</style>
+	</head>
+	<body>
+		
+	</body>
+	<script>
+		var client = io.connect();
+		client.on("connect",function(){
+			console.log("connect");
+		});
+		var body = document.body;
+		client.on("status",function(datas){
+			var html = "";
+			datas.forEach(function(item,index){
+				html += "<div class='item'>"+item.name+"<small>"+new Date(item.startTime)+"</small><hr></hr><div><a class='btn' href='javascript:stop(\""+item.name+"\")'>停止</a></div></div>"
+			});
+			body.innerHTML = html;
+		});
+		client.on("process.new",function(datas){
+			var item = datas;
+			var html = "<div id="+"_item"+item.name+" class='item'>"+item.name+"<small>"+new Date(item.startTime)+"</small><hr></hr><div><a class='btn' href='javascript:stop(\""+item.name+"\")'>停止</a></div></div>";
+			body.innerHTML += html;
+		});
+		client.on("process.exit",function(datas){
+			var element = document.getElementById("_item"+datas.name);
+			console.log(element);
+			if(element){
+				element.parentElement.removeChild(element);
+			}
+		});
+		var stop = function( name ){
+			client.emit("stop", name );
+		}
+	</script>
+</html>
