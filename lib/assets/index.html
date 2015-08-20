@@ -4,6 +4,8 @@
 		<script src="/socket.io/socket.io.js"></script>
 		<style>
 			html,body{background-color:#f4f4f4;margin:0px 0px; padding:0px;font-family:"微软雅黑"}
+			.main{ margin:10px;}
+			h3 {border-left:5px solid #000;padding-left:10px;}
 			.item{ margin:4px; background-color:#ccc;padding:8px;}
 			.item small{ color:#999; font-size:0.2em;padding-left:20px;float:right;margin-top:10px;}
 			.item hr{border:1px solid #999;}
@@ -12,14 +14,24 @@
 		</style>
 	</head>
 	<body>
-		
+		<div class="main">
+			<h3>新文件</h3>
+			<div>
+				<form action="/submitFile" method="POST" enctype="multipart/form-data">
+					<input name="myname" type="text"></input>
+					<input name="mycode" type="file"></input><input type="submit"></input>
+				</form>
+			</div>
+			<h3>运行列表</h3>
+			<div id="channels"></div>
+		</div>
 	</body>
 	<script>
 		var client = io.connect();
 		client.on("connect",function(){
 			console.log("connect");
 		});
-		var body = document.body;
+		var body = document.getElementById("channels");
 		client.on("status",function(datas){
 			var html = "";
 			datas.forEach(function(item,index){
